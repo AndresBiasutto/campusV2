@@ -1,0 +1,111 @@
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html.light {
+  --background-color: theme("colors.light.background");
+  --text-color: theme("colors.light.text");
+  --primary-color: theme("colors.light.primary");
+  --secondary-color: theme("colors.light.secondary");
+  --accent-color: theme("colors.light.accent");
+  --border-color: theme("colors.light.border");
+  --red-btn: theme("colors.light.redBtn");
+  --blue-btn: theme("colors.light.blueBtn");
+  --red-btn-hvr: theme("colors.light.redBtnHvr");
+  --blue-btn-hvr: theme("colors.light.blueBtnHvr");
+}
+
+html.dark {
+  --background-color: theme("colors.dark.background");
+  --text-color: theme("colors.dark.text");
+  --primary-color: theme("colors.dark.primary");
+  --secondary-color: theme("colors.dark.secondary");
+  --accent-color: theme("colors.dark.accent");
+  --border-color: theme("colors.dark.border");
+  --red-btn: theme("colors.dark.redBtn");
+  --blue-btn: theme("colors.dark.blueBtn");
+  --red-btn-hvr: theme("colors.dark.redBtnHvr");
+  --blue-btn-hvr: theme("colors.dark.blueBtnHvr");
+}
+
+@layer base {
+  body {
+    @apply font-primaryRegular;
+  }
+  h1 {
+    @apply w-full text-center text-4xl font-bold text-light-text dark:text-dark-text font-primaryBold;
+  }
+  h2 {
+    @apply w-full text-center text-3xl font-bold text-light-text dark:text-dark-text font-primaryBold;
+  }
+  h3 {
+    @apply w-full text-center text-2xl font-bold text-light-text dark:text-dark-text font-primaryBold;
+  }
+  h4 {
+    @apply w-full text-center font-bold text-light-text dark:text-dark-text font-primaryBold;
+  }
+  p {
+    @apply w-full text-center text-light-text dark:text-dark-text font-primaryRegular;
+  }
+  span {
+    @apply w-full text-start text-red-800 dark:text-dark-redBtn text-sm font-primaryItalic;
+  }
+  li {
+    list-style: none;
+  }
+  textarea {
+    @apply resize-none;
+  }
+}
+
+/* -----SCROLLBAR STYLES----- */
+::-webkit-scrollbar {
+  width: 5px;
+  background: #011b16;
+}
+::-webkit-scrollbar-track {
+  background: #93bfb7;
+}
+::-webkit-scrollbar-thumb {
+  background: #2d3e40;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #316060;
+}
+
+/* -----FONTS----- */
+@font-face {
+  font-family: "Regular";
+  src: local("Ubuntu-Regular"),
+    url("/src/assets/fonts/Ubuntu-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Medium";
+  src: local("Ubuntu-Medium"),
+    url("/src/assets/fonts/Ubuntu-Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Bold";
+  src: local("Ubuntu-Bold"),
+    url("/src/assets/fonts/Ubuntu-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Italic";
+  src: local("Ubuntu-Italic"),
+    url("/src/assets/fonts/Ubuntu-Italic.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Light";
+  src: local("Ubuntu-Light"),
+    url("/src/assets/fonts/Ubuntu-Light.ttf") format("truetype");
+}
