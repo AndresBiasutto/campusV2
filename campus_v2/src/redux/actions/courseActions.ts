@@ -47,15 +47,16 @@ export const CreateCourse = (
 };
 
 
- export const GetCreatedCourse = (
-   id: string
- ):  ThunkAction<void, RootState, unknown, Action<string>> => {
-   return async (dispatch) => {
-     try {
-       const apiData = (await axios.get(`/course/${id}`)).data;
-       dispatch({ type: GET_CREATED_COURSE, payload: apiData });
-     } catch (error) {
-       console.error(error);
-     }
-   };
- };
+export const GetCreatedCourse = (
+  id: string
+): ThunkAction<void, RootState, unknown, Action<string>> => {
+  return async (dispatch) => {
+    try {
+      const apiData = (await axios.get(`/course/${id}`)).data;
+      console.log("Curso obtenido:", apiData); // ✅ Verifica si la API devuelve datos
+      dispatch({ type: GET_CREATED_COURSE, payload: apiData });
+    } catch (error) {
+      console.error("Error al obtener el curso:", error);
+    }
+  };
+};

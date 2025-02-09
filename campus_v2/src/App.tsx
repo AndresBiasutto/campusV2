@@ -1,10 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "./redux/store";
 import { loadUserFromStorage } from "./redux/actions/authActions";
@@ -22,7 +17,7 @@ import Teach from "./views/protectedViews/Teach";
 import CreateCourse from "./views/protectedViews/CreateCourse";
 // import { Cloudinary } from "@cloudinary/url-gen";
 import CreateCourseForm from "./components/templates/CreateCourseForm";
-import CreateCourseData from "./components/templates/CreateCourseData";
+import CreateCourseData from "./views/protectedViews/CreateCourseData";
 
 const App: React.FC = () => {
   // const cld = new Cloudinary({
@@ -99,24 +94,15 @@ const App: React.FC = () => {
               <CreateCourse />
             </PrivateRoute>
           }
-        >
-          <Route
-            path="/teach/createcourse"
-            element={
-              <PrivateRoute roles={["teacher", "student"]}>
-                <CreateCourseForm />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/teach/createcourse/addmodulesandchapters"
-            element={
-              <PrivateRoute roles={["teacher", "student"]}>
-                <CreateCourseData />
-              </PrivateRoute>
-            }
-          />
-        </Route>
+        />
+        <Route
+          path="/teach/createcourse/addmodulesandchapters/:courseId"
+          element={
+            <PrivateRoute roles={["teacher", "student"]}>
+              <CreateCourseData />
+            </PrivateRoute>
+          }
+        />
       </Routes>
 
       <LandingFooter />

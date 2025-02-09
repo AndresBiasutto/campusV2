@@ -17,16 +17,22 @@ import { CreateCourse } from "../../redux/actions/courseActions";
 import FormSubmitBtn from "../atoms/FormSubmitBtn";
 import { useNavigate } from "react-router-dom";
 import FormSelectAndErrorMsg from "../molecules/FormSelectAndErrorMsg";
+import Section from "../../layouts/Section";
+
+
 
 const CreateCourseFormOrg: React.FC = () => {
+  const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
-  const { name: courseName } = useSelector((state: RootState) => state.course);
+
+  const { id: courseId } = useSelector((state: RootState) => state.course);
   const { Themes } = useSelector((state: RootState) => state.courseTheme);
   const { id } = useSelector((state: RootState) => state.auth);
-  const navigate = useNavigate();
+  
   const nameRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLInputElement>(null);
   const themeRef = useRef<HTMLSelectElement>(null);
+
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [imageUrl, setImageUrl] = useState<string>("");
@@ -39,14 +45,20 @@ const CreateCourseFormOrg: React.FC = () => {
     dispatch(GetThemes());
   }, []);
   useEffect(() => {
-    console.log("courseName ", courseName);
+    if (courseId) {
+      setTimeout(() => {
+      navigate(`/teach/createcourse/addmodulesandchapters/${courseId}`);
+      }, 3000);
+    }
+  }, [courseId, navigate]);
+  
+  useEffect(() => {
     setIsWaiting(false);
     if (creationMsg) {
       setIsWaiting(false);
     }
-  }, [courseName, isWaiting, creationMsg]);
+  }, [courseId, isWaiting, creationMsg]);
   useEffect(() => {
-    console.log("isWaiting ", isWaiting);
   }, [isWaiting]);
 
   const changeImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,21 +111,17 @@ const CreateCourseFormOrg: React.FC = () => {
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
     setIsWaiting(true);
-
+  
     const nameError = validateName(name);
     const descriptionError = validateDescription(description);
     const themeError = validateTheme(theme);
-
+  
     if (nameError || descriptionError || themeError) {
-      setErrMsg({
-        name: nameError,
-        theme: themeError,
-        description: descriptionError,
-      });
-      // setIsWaiting(false); // Si hay errores, desactivar el estado de carga
+      setErrMsg({ name: nameError, theme: themeError, description: descriptionError });
+      setIsWaiting(false);
       return;
     }
-
+  
     const newCourse = {
       id: "",
       name,
@@ -121,11 +129,11 @@ const CreateCourseFormOrg: React.FC = () => {
       image: imageUrl,
       themeId: theme,
       creatorId: id || "",
-      // Theme: {},
-      // Creator: {},
+      Theme: { name: Themes.find((t) => t.id === theme)?.name || "" },
     };
-
+  
     dispatch(CreateCourse(newCourse));
+  
     setCreationMsg("Curso creado con éxito");
     setTimeout(() => {
       setCreationMsg("");
@@ -133,56 +141,63 @@ const CreateCourseFormOrg: React.FC = () => {
       setImageUrl("");
       setDescription("");
       setTheme("");
-      setIsWaiting(false); // Resetear estado de carga
-      navigate("/teach/createcourse/addmodulesandchapters");
+      setIsWaiting(false);
+      // 🔹 Eliminamos el navigate de aquí para que ocurra en el useEffect
     }, 3000);
   };
+  
 
   return (
-    <form className="w-full flex flex-col gap-4" onSubmit={handleRegister}>
-      <FormInputAndErrorMsg
-        nameRef={nameRef}
-        changeName={changeName}
-        name={name}
-        errMsg={errMsg.name}
-        type={"text"}
-        placeholder={"nombre del curso"}
-        id={"name"}
-      />
-      <FormTextAreaAndErrorMsg
-        placeholder={"Breve descripción sobre lo que deseas enseñar"}
-        id={"description"}
-        state={description}
-        errMsg={errMsg.description}
-        errRef={descriptionRef}
-        refference={descriptionRef}
-        setState={changeDescription}
-      />
+    <Section bgColor="primary">
+      <h3 className="w-full text-start">
+        Completar información básica sobre la materia
+      </h3>
 
-      <div className="w-full grid grid-cols-none grid-rows-2 md:grid-rows-none md:grid-cols-2 gap-2">
-        <FormSelectAndErrorMsg
-          id={"theme"}
-          optionValue={theme}
-          onOptionChange={changeTheme}
-          allOptions={themeOptions(Themes)}
-          optionRef={themeRef}
-          placeholder={"Tema"}
-          errMsg={errMsg.theme}
+      <form className="w-full flex flex-col gap-4" onSubmit={handleRegister}>
+        <FormInputAndErrorMsg
+          nameRef={nameRef}
+          changeName={changeName}
+          name={name}
+          errMsg={errMsg.name}
+          type={"text"}
+          placeholder={"nombre del curso"}
+          id={"name"}
         />
-        <ImgInputAndAvatar uploadImage={changeImage} image={imageUrl} />
-      </div>
-      <div className="w-full grid grid-cols-2 gap-2">
-        <div></div>
-        <FormSubmitBtn
-          Submit={handleRegister}
-          text={"Crear curso"}
-          isLoading={isWaiting}
-          // errMsg={errMsg}
+        <FormTextAreaAndErrorMsg
+          placeholder={"Breve descripción sobre lo que deseas enseñar"}
+          id={"description"}
+          state={description}
+          errMsg={errMsg.description}
+          errRef={descriptionRef}
+          refference={descriptionRef}
+          setState={changeDescription}
         />
-      </div>
-      <FormErrorMsg errMsg={errMsg.err} errRef={undefined} />
-      <p aria-live="assertive">{creationMsg}</p>
-    </form>
+
+        <div className="w-full grid grid-cols-none grid-rows-2 md:grid-rows-none md:grid-cols-2 gap-2">
+          <FormSelectAndErrorMsg
+            id={"theme"}
+            optionValue={theme}
+            onOptionChange={changeTheme}
+            allOptions={themeOptions(Themes)}
+            optionRef={themeRef}
+            placeholder={"Tema"}
+            errMsg={errMsg.theme}
+          />
+          <ImgInputAndAvatar uploadImage={changeImage} image={imageUrl} />
+        </div>
+        <div className="w-full grid grid-cols-2 gap-2">
+          <div></div>
+          <FormSubmitBtn
+            Submit={handleRegister}
+            text={"Crear curso"}
+            isLoading={isWaiting}
+            // errMsg={errMsg}
+          />
+        </div>
+        <FormErrorMsg errMsg={errMsg.err} errRef={undefined} />
+        <p aria-live="assertive">{creationMsg}</p>
+      </form>
+    </Section>
   );
 };
 
