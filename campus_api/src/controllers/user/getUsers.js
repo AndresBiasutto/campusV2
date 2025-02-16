@@ -1,12 +1,19 @@
-const { User, Role } = require("../../db");
+const { User, Role, Course } = require("../../db");
 
 const getUsers = async () => {
   try {
     const users = await User.findAll({
-      include: {
+      include: [
+       {
         model: Role,
         attributes: ["name", "id"],
-      },
+      }, 
+      {
+        model: Course,
+        as: "createdCourses",
+        attributes: ["name", "id", "image", "description"],
+      }, 
+      ] 
     });
     return users;
   } catch (error) {

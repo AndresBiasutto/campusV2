@@ -22,6 +22,7 @@ interface User {
   description: string;
   contactNumber: string;
   email: string;
+  createdCourses:[];
 }
 interface updatedUser {
   name: string;
@@ -66,22 +67,23 @@ export type AuthActionTypes =
   | LogoutAction
   | ToggleThemeAction;
 
-export const loginSuccess = (user: User): LoginSuccessAction => {
-  // Guarda datos en localStorage
-  window.localStorage.setItem("token", user.token);
-  window.localStorage.setItem("name", user.name);
-  window.localStorage.setItem("role", user.role);
-  window.localStorage.setItem("image", user.image);
-  window.localStorage.setItem("id", user.id);
-  window.localStorage.setItem("description", user.description);
-  window.localStorage.setItem("contactNumber", user.contactNumber);
-  window.localStorage.setItem("email", user.email);
-
-  return {
-    type: LOGIN_SUCCESS,
-    payload: user,
+  export const loginSuccess = (user: User): LoginSuccessAction => {
+    window.localStorage.setItem("token", user.token);
+    window.localStorage.setItem("name", user.name);
+    window.localStorage.setItem("role", user.role);
+    window.localStorage.setItem("image", user.image);
+    window.localStorage.setItem("id", user.id);
+    window.localStorage.setItem("description", user.description);
+    window.localStorage.setItem("contactNumber", user.contactNumber);
+    window.localStorage.setItem("email", user.email);
+    window.localStorage.setItem("createdCourses", JSON.stringify(user.createdCourses || [])); // 🔹 Asegura que se guarde
+  
+    return {
+      type: LOGIN_SUCCESS,
+      payload: user,
+    };
   };
-};
+  
 
 export const logout = (): LogoutAction => ({
   type: LOGOUT,
@@ -142,6 +144,7 @@ export const loadUserFromStorage = (): ThunkAction<
     const description = window?.localStorage?.getItem("description") || "";
     const contactNumber = window?.localStorage?.getItem("contactNumber") || "";
     const email = window?.localStorage?.getItem("email") || "";
+    const createdCourses = JSON.parse(window?.localStorage?.getItem("createdCourses") || "[]");
 
     if (token) {
       const user: User = {
@@ -153,6 +156,7 @@ export const loadUserFromStorage = (): ThunkAction<
         description,
         contactNumber,
         email,
+        createdCourses
       };
       dispatch(loginSuccess(user));
     }

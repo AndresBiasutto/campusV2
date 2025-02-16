@@ -51,7 +51,21 @@ const CourseReducer = (
         };
       }
       return state;
-    case GET_CREATED_COURSE:
+      case GET_CREATED_COURSE:
+        if ("payload" in action) {
+          return {
+            ...state,
+            name: action.payload.name,
+            themeId: action.payload.themeId,
+            id: action.payload.id,
+            creatorId: action.payload.creatorId,
+            image: action.payload.image,
+            description: action.payload.description,
+            Theme: action.payload.Theme
+          };
+        }
+        return state;
+      
       if ("payload" in action) {
         return {
           ...state,

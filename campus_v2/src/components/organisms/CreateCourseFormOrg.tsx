@@ -1,198 +1,136 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { AppDispatch } from "../../redux/store";
+import { RootState } from "../../redux/reducers";
+import { CreateCourse } from "../../redux/actions/courseActions";
+import { GetThemes } from "../../redux/actions/themeActions";
+import { validateName, validateDescription, validateTheme } from "../../utils/validations/CreateCourseValidations";
+import useImageUpload from "../../hooks/UseImagUpload";
+import Section from "../../layouts/Section";
 import FormErrorMsg from "../atoms/FormErrorMsg";
 import ImgInputAndAvatar from "../molecules/ImgInputAndAvatar";
-import axios from "../../api/axios";
-import {
-  validateName,
-  validateDescription,
-  validateTheme,
-} from "../../utils/validations/CreateCourseValidations";
 import FormInputAndErrorMsg from "../molecules/FormInputAndErrorMsg";
 import FormTextAreaAndErrorMsg from "../molecules/FormTextAreaAndErrorMsg";
-import { RootState } from "../../redux/reducers";
-import { useDispatch, useSelector } from "react-redux";
-import { GetThemes } from "../../redux/actions/themeActions";
-import { AppDispatch } from "../../redux/store";
-import { CreateCourse } from "../../redux/actions/courseActions";
 import FormSubmitBtn from "../atoms/FormSubmitBtn";
-import { useNavigate } from "react-router-dom";
 import FormSelectAndErrorMsg from "../molecules/FormSelectAndErrorMsg";
-import Section from "../../layouts/Section";
-
-
 
 const CreateCourseFormOrg: React.FC = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
-
+  
   const { id: courseId } = useSelector((state: RootState) => state.course);
   const { Themes } = useSelector((state: RootState) => state.courseTheme);
   const { id } = useSelector((state: RootState) => state.auth);
-  
-  const nameRef = useRef<HTMLInputElement>(null);
-  const descriptionRef = useRef<HTMLInputElement>(null);
-  const themeRef = useRef<HTMLSelectElement>(null);
 
-  const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [imageUrl, setImageUrl] = useState<string>("");
-  const [theme, setTheme] = useState<string>("");
+  const nameRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const themeRef = useRef<HTMLSelectElement>(null);
+  
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    theme: "",
+  });
   const [errMsg, setErrMsg] = useState<{ [key: string]: string }>({});
-  const [isWaiting, setIsWaiting] = useState<boolean>(false);
-  const [creationMsg, setCreationMsg] = useState<string>("");
+  const [isWaiting, setIsWaiting] = useState(false);
+  const [creationMsg, setCreationMsg] = useState("");
+  const { imageUrl, changeImage } = useImageUpload();
 
   useEffect(() => {
     dispatch(GetThemes());
-  }, []);
+  }, [dispatch]);
+
   useEffect(() => {
     if (courseId) {
-      setTimeout(() => {
-      navigate(`/teach/createcourse/addmodulesandchapters/${courseId}`);
-      }, 3000);
+      setTimeout(() => navigate(`/teach/createcourse/addmodulesandchapters/${courseId}`), 3000);
     }
   }, [courseId, navigate]);
-  
-  useEffect(() => {
-    setIsWaiting(false);
-    if (creationMsg) {
-      setIsWaiting(false);
-    }
-  }, [courseId, isWaiting, creationMsg]);
-  useEffect(() => {
-  }, [isWaiting]);
 
-  const changeImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) {
-      console.error("No file selected");
-      return;
-    }
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "images");
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+    setErrMsg((prev) => ({ ...prev, [id]: validateField(id, value) }));
+  };
 
-    try {
-      const res = await axios.post(
-        "https://api.cloudinary.com/v1_1/dvpchtyzq/image/upload",
-        formData,
-        { withCredentials: false }
-      );
-      setImageUrl(res.data.secure_url);
-    } catch (error) {
-      console.error("Error uploading image:", error);
+  const validateField = (field: string, value: string) => {
+    switch (field) {
+      case "name": return validateName(value);
+      case "description": return validateDescription(value);
+      case "theme": return validateTheme(value);
+      default: return "";
     }
   };
 
-  const changeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setName(value);
-    setErrMsg((prev) => ({ ...prev, name: validateName(value) }));
-  };
-
-  const changeDescription = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    setDescription(value);
-    setErrMsg((prev) => ({ ...prev, description: validateDescription(value) }));
-  };
-
-  const changeTheme = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    setTheme(value);
-    setErrMsg((prev) => ({ ...prev, theme: validateTheme(value) }));
-  };
-
-  const themeOptions = (Themes: any[]) => {
-    return Themes.map((theme) => ({
-      value: theme.id,
-      label: theme.name,
-    }));
-  };
-
-  const handleRegister = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsWaiting(true);
-  
-    const nameError = validateName(name);
-    const descriptionError = validateDescription(description);
-    const themeError = validateTheme(theme);
-  
-    if (nameError || descriptionError || themeError) {
-      setErrMsg({ name: nameError, theme: themeError, description: descriptionError });
-      setIsWaiting(false);
+
+    const errors = {
+      name: validateName(formData.name),
+      description: validateDescription(formData.description),
+      theme: validateTheme(formData.theme),
+    };
+    
+    if (Object.values(errors).some(Boolean)) {
+      setErrMsg(errors);
       return;
     }
-  
+
     const newCourse = {
       id: "",
-      name,
-      description,
+      ...formData,
       image: imageUrl,
-      themeId: theme,
+      themeId: formData.theme,
       creatorId: id || "",
-      Theme: { name: Themes.find((t) => t.id === theme)?.name || "" },
+      Theme: { name: Themes.find((t) => t.id === formData.theme)?.name || "" },
     };
-  
+
     dispatch(CreateCourse(newCourse));
-  
     setCreationMsg("Curso creado con éxito");
     setTimeout(() => {
       setCreationMsg("");
-      setName("");
-      setImageUrl("");
-      setDescription("");
-      setTheme("");
+      setFormData({ name: "", description: "", theme: "" });
       setIsWaiting(false);
-      // 🔹 Eliminamos el navigate de aquí para que ocurra en el useEffect
     }, 3000);
   };
-  
 
   return (
     <Section bgColor="primary">
-      <h3 className="w-full text-start">
-        Completar información básica sobre la materia
-      </h3>
-
-      <form className="w-full flex flex-col gap-4" onSubmit={handleRegister}>
+      <form className="w-full flex flex-col gap-4" onSubmit={handleSubmit}>
         <FormInputAndErrorMsg
           nameRef={nameRef}
-          changeName={changeName}
-          name={name}
+          changeName={handleChange}
+          name={formData.name}
           errMsg={errMsg.name}
-          type={"text"}
-          placeholder={"nombre del curso"}
-          id={"name"}
+          type="text"
+          placeholder="Nombre del curso"
+          id="name"
         />
         <FormTextAreaAndErrorMsg
-          placeholder={"Breve descripción sobre lo que deseas enseñar"}
-          id={"description"}
-          state={description}
+          placeholder="Breve descripción sobre lo que deseas enseñar"
+          id="description"
+          state={formData.description}
           errMsg={errMsg.description}
           errRef={descriptionRef}
           refference={descriptionRef}
-          setState={changeDescription}
+          setState={handleChange}
         />
-
-        <div className="w-full grid grid-cols-none grid-rows-2 md:grid-rows-none md:grid-cols-2 gap-2">
+        <div className="w-full grid grid-cols-2 gap-2">
           <FormSelectAndErrorMsg
-            id={"theme"}
-            optionValue={theme}
-            onOptionChange={changeTheme}
-            allOptions={themeOptions(Themes)}
+            id="theme"
+            optionValue={formData.theme}
+            onOptionChange={handleChange}
+            allOptions={Themes.map(t => ({ value: t.id, label: t.name }))}
             optionRef={themeRef}
-            placeholder={"Tema"}
+            placeholder="Tema"
             errMsg={errMsg.theme}
           />
           <ImgInputAndAvatar uploadImage={changeImage} image={imageUrl} />
         </div>
         <div className="w-full grid grid-cols-2 gap-2">
           <div></div>
-          <FormSubmitBtn
-            Submit={handleRegister}
-            text={"Crear curso"}
-            isLoading={isWaiting}
-            // errMsg={errMsg}
-          />
+          <FormSubmitBtn Submit={handleSubmit} text="Crear curso" isLoading={isWaiting} />
         </div>
         <FormErrorMsg errMsg={errMsg.err} errRef={undefined} />
         <p aria-live="assertive">{creationMsg}</p>

@@ -5,6 +5,7 @@ import {
   AuthActionTypes,
 } from "../actions/authActions";
 
+
 interface AuthState {
   token: any;
   isAuthenticated: boolean;
@@ -16,6 +17,7 @@ interface AuthState {
   image: string | null;
   contactNumber: string | null;
   description: string | null;
+  createdCourses: [] | null;
 }
 
 const initialAuthState: AuthState = {
@@ -29,6 +31,7 @@ const initialAuthState: AuthState = {
   image: null,
   contactNumber: null,
   description: null,
+  createdCourses: null,
 };
 
 const authReducer = (
@@ -48,7 +51,8 @@ const authReducer = (
           token: action.payload.token,
           image: action.payload.image,
           contactNumber: action.payload.contactNumber,
-          description: action.payload.description
+          description: action.payload.description,
+          createdCourses: action.payload.createdCourses
         };
       }
       return state;

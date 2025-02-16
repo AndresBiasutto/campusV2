@@ -1,4 +1,4 @@
-const { User, Role } = require("../../db");
+const { User, Role, Course, Theme } = require("../../db");
 const comparePassword = require("../../libs/comparePassword");
 const jwt = require("jsonwebtoken");
 
@@ -8,10 +8,22 @@ const login = async (e_mail, password) => {
   // Buscar el usuario junto con el rol
   const userFound = await User.findOne({
     where: { email: e_mail },
-    include: {
-      model: Role,
-      attributes: ["name", "id"],
-    },
+    include: [
+      {
+        model: Role,
+        attributes: ["name", "id"],
+      },
+      {
+        model: Course,
+        as: "createdCourses",
+        attributes: ["name", "id", "description", "image"],
+        include: {
+          model: Theme,
+          as: "Theme",
+          attributes: ["name"],
+        },
+      },
+    ],
   });
 
   if (!userFound) {
@@ -42,6 +54,7 @@ const login = async (e_mail, password) => {
     description: userFound.description,
     department: userFound.department,
     creator: userFound.creator,
+    createdCourses: userFound.createdCourses,
   };
 
   return response;

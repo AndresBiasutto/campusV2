@@ -59,8 +59,9 @@ const LoginFormOrg: React.FC = () => {
           description,
           contactNumber,
           email,
+          createdCourses
         } = response.data;
-
+        console.log("Respuesta del servidor:", response.data);
         dispatch(
           loginSuccess({
             name,
@@ -71,6 +72,7 @@ const LoginFormOrg: React.FC = () => {
             description,
             contactNumber,
             email,
+            createdCourses
           })
         );
 

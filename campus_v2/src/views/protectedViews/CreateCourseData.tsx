@@ -1,13 +1,13 @@
 import React from 'react'
-import CreateCourseDataOrg from '../../components/organisms/CreateCourseDataOrg'
 import Container from '../../layouts/Container'
+import CreateCourseTemplate from '../../components/templates/CreateCourseData'
 
 const CreateCourseData: React.FC= () => {
   
   return (
 
     <Container >
-        <CreateCourseDataOrg />
+        <CreateCourseTemplate />
     </Container>
   )
 }

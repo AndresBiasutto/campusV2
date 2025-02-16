@@ -42,19 +42,19 @@ html.dark {
     @apply font-primaryRegular;
   }
   h1 {
-    @apply w-full text-center text-4xl font-bold text-light-text dark:text-dark-text font-primaryBold;
+    @apply w-full text-start text-4xl font-bold text-light-text dark:text-dark-text font-primaryBold;
   }
   h2 {
-    @apply w-full text-center text-3xl font-bold text-light-text dark:text-dark-text font-primaryBold;
+    @apply w-full text-start text-3xl font-bold text-light-text dark:text-dark-text font-primaryBold;
   }
   h3 {
-    @apply w-full text-center text-2xl font-bold text-light-text dark:text-dark-text font-primaryBold;
+    @apply w-full text-start text-2xl font-bold text-light-text dark:text-dark-text font-primaryBold;
   }
   h4 {
-    @apply w-full text-center font-bold text-light-text dark:text-dark-text font-primaryBold;
+    @apply w-full text-start font-bold text-light-text dark:text-dark-text font-primaryBold;
   }
   p {
-    @apply w-full text-center text-light-text dark:text-dark-text font-primaryRegular;
+    @apply w-full text-start text-light-text dark:text-dark-text font-primaryRegular;
   }
   span {
     @apply w-full text-start text-red-800 dark:text-dark-redBtn text-sm font-primaryItalic;

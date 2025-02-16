@@ -15,16 +15,9 @@ import { RootState } from "./redux/reducers";
 import ProfileSettings from "./views/protectedViews/ProfileSettings";
 import Teach from "./views/protectedViews/Teach";
 import CreateCourse from "./views/protectedViews/CreateCourse";
-// import { Cloudinary } from "@cloudinary/url-gen";
-import CreateCourseForm from "./components/templates/CreateCourseForm";
 import CreateCourseData from "./views/protectedViews/CreateCourseData";
 
 const App: React.FC = () => {
-  // const cld = new Cloudinary({
-  //   cloud: {
-  //     cloudName: 'demo'
-  //   }
-  // });
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
