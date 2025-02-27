@@ -1,6 +1,6 @@
 import React from "react";
 import { TiDocumentAdd } from "react-icons/ti";
-import Btn from "../../layouts/Btn";
+import Btn from "./btnAtoms/Btn";
 
 interface addChapterProps {}
 

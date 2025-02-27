@@ -38,7 +38,7 @@ const App: React.FC = () => {
   }, [dispatch, navigate]);
 
   return (
-    <div className="h-full min-h-screen transition bg-light-background dark:bg-dark-background flex flex-col justify-start items-center">
+    <div className="relative h-full min-h-screen transition bg-light-background dark:bg-dark-background flex flex-col justify-start items-center">
       {isAuthenticated &&
       location.pathname !== "/" &&
       location.pathname !== "/login" ? (

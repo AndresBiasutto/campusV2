@@ -1,5 +1,6 @@
 import React from "react";
 import { IoBriefcaseOutline } from "react-icons/io5";
+import H3Text from "../../atoms/textAtoms/H3Text";
 
 interface cardDataProps {
   name: string;
@@ -19,8 +20,8 @@ const CardData: React.FC<cardDataProps> = ({
 
         {themeName}
       </span>
-      <h3>{name}</h3>
-      <p className="text-gray-700 text-base text-start">{description}</p>
+      <H3Text text={name} />
+      <p className=" text-base text-start">{description}</p>
     </div>
   );
 };

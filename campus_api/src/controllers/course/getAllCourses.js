@@ -1,17 +1,29 @@
-const {Course, User}= require("../../db")
+const { Course, Chapter, User, Lection } = require("../../db");
 
-const getAllCourses= async ()=>{
-    const Courses= Course.findAll({
+const getAllCourses = async () => {
+  const Courses = Course.findAll({
+    include: [
+      {
+        model: Chapter,
+        as: "chapters",
+        attributes: ["id", "name", "chapterOrder"],
         include: [
-            {
-              model: User,
-              as: "creator",
-              attributes: ["id", "name"],
-            },
-          ],
-    });
+          {
+            model: Lection,
+            as: "lections",
+            attributes: ["id", "name", "lectionOrder"],
+          },
+        ]
+      },
+      {
+        model: User,
+        as: "creator",
+        attributes: ["id", "name"],
+      },
+    ],
+  });
 
-    return Courses;
-}
+  return Courses;
+};
 
-module.exports= getAllCourses;
+module.exports = getAllCourses;

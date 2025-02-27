@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Section from "../../layouts/Section";
 import NavigationLink from "../atoms/NavigationLink";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/reducers";
 import { LuBookPlus } from "react-icons/lu";
 import CourseCardOrg from "../organisms/CourseCardOrg";
 import TemplateHeader from "../molecules/TemplateHeader";
+import { getMyCourses } from "../../redux/actions/courseActions";
 
 interface Course {
   id: string;
@@ -16,10 +17,20 @@ interface Course {
 }
 
 const TeacherCourses: React.FC = () => {
-  const { auth } = useSelector((state: RootState) => state);
-  const storedCourses: Course[] = auth?.createdCourses || [];
+  const dispatch = useDispatch<any>();
+  const { id } = useSelector((state: RootState) => state.auth);
+  const { course } = useSelector((state: RootState) => state);
+  const storedCourses: Course[] = course.courses;
+
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getMyCourses(id));
+    }  
+  }, [])
+  
   return (
-    <Section bgColor="primary">
+    <Section bgColor="">
       <TemplateHeader
         title="Mis curos"
         text="Acá vas a poder agregar tus cursos y modificarlos"
@@ -32,8 +43,8 @@ const TeacherCourses: React.FC = () => {
           />,
         ]}
       />
-      {storedCourses.map((course) => (
-        <CourseCardOrg course={course} />
+      {storedCourses.map((course, i) => (
+        <CourseCardOrg key={i} course={course} />
       ))}
     </Section>
   );

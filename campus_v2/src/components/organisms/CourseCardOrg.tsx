@@ -3,7 +3,7 @@ import CardImage from "../atoms/CardImage";
 import CardCreatorInfo from "../molecules/CardCreatorInfo";
 import CardData from "./cards/CardData";
 import { Link } from "react-router-dom";
-import RoundedBtn from "../../layouts/RoundedBtn";
+import RoundedBtn from "../atoms/btnAtoms/RoundedBtn";
 import { LuBookX } from "react-icons/lu";
 import { FaAngleRight } from "react-icons/fa6";
 

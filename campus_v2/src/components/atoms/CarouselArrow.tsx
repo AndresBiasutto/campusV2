@@ -1,5 +1,5 @@
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import RoundedBtn from "../../layouts/RoundedBtn";
+import RoundedBtn from "./btnAtoms/RoundedBtn";
 import React from "react";
 
 interface ContainerProps {
@@ -8,7 +8,7 @@ interface ContainerProps {
 }
 
 const CarouselArrow: React.FC<ContainerProps> = ({ direction, action }) => (
-  <RoundedBtn action={action}>
+  <RoundedBtn action={action} title={direction} bgColor={"primary"}>
     <span className=" h-8 w-8 flex justify-center items-center text-light-text dark:text-dark-text">
       {direction === "left" ? (
         <SlArrowLeft className=" " />

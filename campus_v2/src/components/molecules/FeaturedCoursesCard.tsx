@@ -1,6 +1,6 @@
 import React from "react";
 import { FaStar, FaCartPlus } from "react-icons/fa";
-import LinkBtn from "../../layouts/LinkBtn";
+import LinkBtn from "../atoms/btnAtoms/LinkBtn";
 
 interface Card {
   img: string;

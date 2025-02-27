@@ -12,7 +12,7 @@ const Btn: React.FC<ContainerProps> = ({ children, action, title }) => {
       className={`group w-full p-2 rounded-tl-lg rounded-br-lg flex items-center justify-center gap-2 bg-light-accent dark:bg-dark-accent text-light-text dark:text-dark-text border-2 border-light-border dark:border-dark-border md:hover:shadow-light md:dark:hover:shadow-dark  transition`}
       title={title}
     >
-     {title} {children}
+     {title} <p className=" w-min text-2xl">{children}</p> 
     </button>
   );
 };

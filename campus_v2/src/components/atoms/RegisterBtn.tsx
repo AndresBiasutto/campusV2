@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import LinkBtn from "../../layouts/LinkBtn";
+import LinkBtn from "./btnAtoms/LinkBtn";
 import { IoPersonAddOutline } from "react-icons/io5";
 
 interface ContainerProps {

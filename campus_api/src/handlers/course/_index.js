@@ -5,6 +5,9 @@ const postCoursetHandler = require("./postCourseHandler");
 const getCoursesHandler = require("./getCoursetHandler");
 const getCourseByIdHandler = require("./getCourseByIdHandler");
 const deleteCourseHandler = require("./deleteCourseHandler");
+const postChapterHandler = require("./postChapterHandler");
+const getUserCoursesHandler = require("./getUserCoursesHandler");
+const postChapterLectionHandler = require("./postChapterLectionHandler");
 
 module.exports = {
   postThemeHandler,
@@ -12,5 +15,8 @@ module.exports = {
   getCoursesHandler,
   getThemeHandler,
   getCourseByIdHandler,
-  deleteCourseHandler
+  deleteCourseHandler,
+  postChapterHandler,
+  getUserCoursesHandler,
+  postChapterLectionHandler
 };

@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../../redux/actions/authActions";
 import { FaLightbulb, FaRegLightbulb  } from "react-icons/fa6";
 
-import RoundedBtn from "../../layouts/RoundedBtn";
+import RoundedBtn from "./btnAtoms/RoundedBtn";
 import { AppDispatch } from "../../redux/store";
 import { RootState } from "../../redux/reducers";
 
@@ -14,7 +14,7 @@ const DarkModeBtn = () => {
     dispatch(toggleTheme());
   };
   return (
-    <RoundedBtn action={handleThemeToggle} title="Toggle Theme">
+    <RoundedBtn action={handleThemeToggle} title="Toggle Theme" bgColor={"primary"}>
       {darkMode ? (
         <FaLightbulb className=" md:group-hover:scale-105 text-nowrap md:text-2xl" />
       ) : (

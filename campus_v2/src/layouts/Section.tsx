@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 interface SectionProps {
   children: ReactNode; // Acepta cualquier contenido React válido (nodos).
-  bgColor?: "primary" | "accent" | "secondary";
+  bgColor?: "primary" | "accent" | "secondary" | "";
 }
 
 const Section: React.FC<SectionProps> = ({ children, bgColor }) => {

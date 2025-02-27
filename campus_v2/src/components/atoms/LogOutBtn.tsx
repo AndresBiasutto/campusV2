@@ -1,4 +1,4 @@
-import LinkBtn from "../../layouts/LinkBtn";
+import LinkBtn from "./btnAtoms/LinkBtn";
 import { IoMdLogOut } from "react-icons/io";
 import { AppDispatch } from "../../redux/store";
 import { useDispatch } from "react-redux";

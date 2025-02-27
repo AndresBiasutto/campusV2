@@ -1,30 +1,59 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ChapterCard from "./cards/ChapterCard";
-import AddChapterBtn from "../atoms/AddChapterBtn";
-// import { useDispatch, useSelector } from "react-redux";
-// import { RootState } from "../../redux/reducers";
-// import { GetCreatedCourse } from "../../redux/actions/courseActions";
-// import { AppDispatch } from "../../redux/store";
-// import { useParams } from 'react-router-dom';
+import AddChapterBtn from "../molecules/AddChapterBtn";
+import { AppDispatch } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  GetCreatedCourse,
+  getMyCourses,
+} from "../../redux/actions/courseActions";
+import { RootState } from "../../redux/reducers";
+import { useParams } from "react-router-dom";
+import CreatChapterFormOrg from "./forms/CreateChapterFormOrg";
+import useOrderedList from "../../hooks/UseOrderList";
 
 const CreateCourseDataOrg: React.FC = () => {
-  // const { courseId } = useParams();
-  // const dispatch = useDispatch<AppDispatch>();
-  // const { course } = useSelector((state: RootState) => state);
+  const dispatch = useDispatch<AppDispatch>();
+  const { courseId } = useParams<{ courseId: string }>();
+  const { course } = useSelector((state: RootState) => state);
+  const { id: userId } = useSelector((state: RootState) => state.auth);
+  const chapters = course.chapters;
+  const [isOpen, setIsOpen] = useState(false);
 
-  // useEffect(() => {
-  //   if (courseId) {
-  //     dispatch(GetCreatedCourse(courseId))
-  //   }
-  // }, [courseId, dispatch]);
+  useEffect(() => {
+    dispatch(GetCreatedCourse(courseId || ""));
+    console.log(chapters);
+
+    return () => {
+      dispatch(GetCreatedCourse(""));
+    };
+  }, [courseId]);
+  useEffect(() => {
+
+    getMyCourses(userId || "");
+  }, [course.chapters]);
+
+  const orderedChapters = useOrderedList(course?.chapters ?? [], "chapterOrder");
 
   return (
-    <div className="w-full h-auto flex flex-col justify-start items-start">
-      <ChapterCard />
-      <ChapterCard />
-      <ChapterCard />
+    <div className=" relative w-full h-auto flex flex-col justify-start items-start ">
+      {orderedChapters &&
+        orderedChapters.map((chapter) => (
+          <ChapterCard
+            key={chapter.id}
+            chapterId={chapter.id}
+            name={chapter.name}
+            chapterOrder={chapter.chapterOrder}
+            lections={chapter.lections}
+          />
+        ))}
       <div className=" w-full mt-2">
-        <AddChapterBtn />
+        <AddChapterBtn
+          isOpen={isOpen}
+          onClose={() => setIsOpen(!isOpen)}
+          title="Mi Modal"
+          modalChildren={<CreatChapterFormOrg />}
+        />
       </div>
     </div>
   );

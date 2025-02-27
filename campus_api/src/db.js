@@ -37,6 +37,7 @@ const {
   Course,
   File,
   Role,
+  Lection,
   Module,
   Video,
   Chapter,
@@ -48,7 +49,10 @@ User.belongsTo(Role, { foreignKey: "role" });
 User.hasMany(Course, { as: "createdCourses", foreignKey: "creatorId" });
 Course.belongsTo(User, { as: "creator", foreignKey: "creatorId" });
 Course.belongsTo(Theme, { foreignKey: "themeId" });
-
+Course.hasMany(Chapter, { foreignKey: "courseId", as: "chapters" });
+Chapter.belongsTo(Course, { foreignKey: "courseId", as: "course" });
+Chapter.hasMany(Lection, { foreignKey: "chapterId", as: "lections" });
+Lection.belongsTo(Chapter, { foreignKey: "chapterId", as: "chapter" });
 module.exports = {
   ...sequelize.models,
   conn: sequelize,

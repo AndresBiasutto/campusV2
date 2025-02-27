@@ -54,7 +54,7 @@ html.dark {
     @apply w-full text-start font-bold text-light-text dark:text-dark-text font-primaryBold;
   }
   p {
-    @apply w-full text-start text-light-text dark:text-dark-text font-primaryRegular;
+    @apply w-full text-start text-gray-700 dark:text-dark-text font-primaryRegular;
   }
   span {
     @apply w-full text-start text-red-800 dark:text-dark-redBtn text-sm font-primaryItalic;

@@ -1,5 +1,5 @@
 import { IoLibraryOutline } from "react-icons/io5";
-import LinkBtn from "../../layouts/LinkBtn";
+import LinkBtn from "./btnAtoms/LinkBtn";
 
 const ListCoursesBtn: React.FC = () => (
   <LinkBtn

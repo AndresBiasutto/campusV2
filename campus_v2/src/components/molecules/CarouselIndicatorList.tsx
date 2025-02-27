@@ -1,5 +1,5 @@
 import React from "react";
-import CarouselButton from "../atoms/CarouselButton";
+import CarouselButton from "../atoms/btnAtoms/CarouselButton";
 
 interface Slide {
   src: string;

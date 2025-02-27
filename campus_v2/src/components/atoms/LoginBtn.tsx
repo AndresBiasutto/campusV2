@@ -1,4 +1,4 @@
-import LinkBtn from "../../layouts/LinkBtn";
+import LinkBtn from "./btnAtoms/LinkBtn";
 import { IoMdLogIn } from "react-icons/io";
 
 

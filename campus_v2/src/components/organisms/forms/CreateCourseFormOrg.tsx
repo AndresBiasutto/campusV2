@@ -1,24 +1,28 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AppDispatch } from "../../redux/store";
-import { RootState } from "../../redux/reducers";
-import { CreateCourse } from "../../redux/actions/courseActions";
-import { GetThemes } from "../../redux/actions/themeActions";
-import { validateName, validateDescription, validateTheme } from "../../utils/validations/CreateCourseValidations";
-import useImageUpload from "../../hooks/UseImagUpload";
-import Section from "../../layouts/Section";
-import FormErrorMsg from "../atoms/FormErrorMsg";
-import ImgInputAndAvatar from "../molecules/ImgInputAndAvatar";
-import FormInputAndErrorMsg from "../molecules/FormInputAndErrorMsg";
-import FormTextAreaAndErrorMsg from "../molecules/FormTextAreaAndErrorMsg";
-import FormSubmitBtn from "../atoms/FormSubmitBtn";
-import FormSelectAndErrorMsg from "../molecules/FormSelectAndErrorMsg";
+import { AppDispatch } from "../../../redux/store";
+import { RootState } from "../../../redux/reducers";
+import { CreateCourse } from "../../../redux/actions/courseActions";
+import { GetThemes } from "../../../redux/actions/themeActions";
+import {
+  validateName,
+  validateDescription,
+  validateTheme,
+} from "../../../utils/validations/CreateCourseValidations";
+import useImageUpload from "../../../hooks/UseImagUpload";
+import Section from "../../../layouts/Section";
+import FormErrorMsg from "../../atoms/FormErrorMsg";
+import ImgInputAndAvatar from "../../molecules/ImgInputAndAvatar";
+import FormInputAndErrorMsg from "../../molecules/FormInputAndErrorMsg";
+import FormTextAreaAndErrorMsg from "../../molecules/FormTextAreaAndErrorMsg";
+import FormSubmitBtn from "../../atoms/FormSubmitBtn";
+import FormSelectAndErrorMsg from "../../molecules/FormSelectAndErrorMsg";
 
 const CreateCourseFormOrg: React.FC = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
-  
+
   const { id: courseId } = useSelector((state: RootState) => state.course);
   const { Themes } = useSelector((state: RootState) => state.courseTheme);
   const { id } = useSelector((state: RootState) => state.auth);
@@ -26,7 +30,7 @@ const CreateCourseFormOrg: React.FC = () => {
   const nameRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
   const themeRef = useRef<HTMLSelectElement>(null);
-  
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -43,11 +47,14 @@ const CreateCourseFormOrg: React.FC = () => {
 
   useEffect(() => {
     if (courseId) {
-      setTimeout(() => navigate(`/teach/createcourse/addmodulesandchapters/${courseId}`), 3000);
     }
   }, [courseId, navigate]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
     setErrMsg((prev) => ({ ...prev, [id]: validateField(id, value) }));
@@ -55,10 +62,14 @@ const CreateCourseFormOrg: React.FC = () => {
 
   const validateField = (field: string, value: string) => {
     switch (field) {
-      case "name": return validateName(value);
-      case "description": return validateDescription(value);
-      case "theme": return validateTheme(value);
-      default: return "";
+      case "name":
+        return validateName(value);
+      case "description":
+        return validateDescription(value);
+      case "theme":
+        return validateTheme(value);
+      default:
+        return "";
     }
   };
 
@@ -71,7 +82,7 @@ const CreateCourseFormOrg: React.FC = () => {
       description: validateDescription(formData.description),
       theme: validateTheme(formData.theme),
     };
-    
+
     if (Object.values(errors).some(Boolean)) {
       setErrMsg(errors);
       return;
@@ -84,6 +95,8 @@ const CreateCourseFormOrg: React.FC = () => {
       themeId: formData.theme,
       creatorId: id || "",
       Theme: { name: Themes.find((t) => t.id === formData.theme)?.name || "" },
+      Creator: { id: id || "", name: "" },
+      chapters: [],
     };
 
     dispatch(CreateCourse(newCourse));
@@ -92,6 +105,7 @@ const CreateCourseFormOrg: React.FC = () => {
       setCreationMsg("");
       setFormData({ name: "", description: "", theme: "" });
       setIsWaiting(false);
+      navigate(`/teach/createcourse/addmodulesandchapters/${courseId}`);
     }, 3000);
   };
 
@@ -121,7 +135,7 @@ const CreateCourseFormOrg: React.FC = () => {
             id="theme"
             optionValue={formData.theme}
             onOptionChange={handleChange}
-            allOptions={Themes.map(t => ({ value: t.id, label: t.name }))}
+            allOptions={Themes.map((t) => ({ value: t.id, label: t.name }))}
             optionRef={themeRef}
             placeholder="Tema"
             errMsg={errMsg.theme}
@@ -130,7 +144,11 @@ const CreateCourseFormOrg: React.FC = () => {
         </div>
         <div className="w-full grid grid-cols-2 gap-2">
           <div></div>
-          <FormSubmitBtn Submit={handleSubmit} text="Crear curso" isLoading={isWaiting} />
+          <FormSubmitBtn
+            Submit={handleSubmit}
+            text="Crear curso"
+            isLoading={isWaiting}
+          />
         </div>
         <FormErrorMsg errMsg={errMsg.err} errRef={undefined} />
         <p aria-live="assertive">{creationMsg}</p>

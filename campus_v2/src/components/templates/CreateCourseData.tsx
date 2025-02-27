@@ -6,11 +6,11 @@ import CreateCourseDetailsOrg from "../organisms/CreateCourseDetailsOrg";
 
 const CreateCourseData: React.FC = () => {
   return (
-    <Section bgColor="primary">
+    <Section bgColor="">
       <TemplateHeader
-        title={"Añadir capitulos y lecciones"}
+        title={"AÑADIR CAPITULOS Y LECCIONES"}
         text={
-          "Tu nuevo curso ya fue creado correctamente, ya podés añadir más información."
+          "Añadir más información."
         }
         buttons={[]}
       />
