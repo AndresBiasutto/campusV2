@@ -4,7 +4,7 @@ import NavigationLink from "../atoms/NavigationLink";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/reducers";
 import { LuBookPlus } from "react-icons/lu";
-import CourseCardOrg from "../organisms/CourseCardOrg";
+import CourseCardOrg from "../organisms/cards/CourseCardOrg";
 import TemplateHeader from "../molecules/TemplateHeader";
 import { getMyCourses } from "../../redux/actions/courseActions";
 
@@ -18,9 +18,9 @@ interface Course {
 
 const TeacherCourses: React.FC = () => {
   const dispatch = useDispatch<any>();
-  const { id } = useSelector((state: RootState) => state.auth);
+  const { id } = useSelector((state: RootState) => state?.auth);
   const { course } = useSelector((state: RootState) => state);
-  const storedCourses: Course[] = course.courses;
+  const storedCourses: Course[] = course?.courses;
 
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const TeacherCourses: React.FC = () => {
       dispatch(getMyCourses(id));
     }  
   }, [])
-  
+
   return (
     <Section bgColor="">
       <TemplateHeader

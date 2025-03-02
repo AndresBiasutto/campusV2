@@ -4,10 +4,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../../redux/store";
-import {
-  CreateChapter,
-  GetCreatedCourse,
-} from "../../../redux/actions/courseActions";
+import { createChapter, getCreatedCourse } from "../../../redux/actions/courseActions";
 import FormInputAndErrorMsg from "../../molecules/FormInputAndErrorMsg";
 import Section from "../../../layouts/Section";
 import FormErrorMsg from "../../atoms/FormErrorMsg";
@@ -28,7 +25,7 @@ const CreateChapterFormOrg: React.FC = () => {
 
   useEffect(() => {
     if (courseId) {
-      dispatch(GetCreatedCourse(courseId));
+      dispatch(getCreatedCourse(courseId));
     }
   }, [dispatch, courseId]);
 
@@ -61,8 +58,8 @@ const CreateChapterFormOrg: React.FC = () => {
       chapterOrder: chapters ? chapters.length + 1 : 1,
     };
 
-    await dispatch(CreateChapter(newChapter));
-    await dispatch(GetCreatedCourse(courseId || "")); // Refresca la lista de capítulos
+    await dispatch(createChapter(newChapter));
+    await dispatch(getCreatedCourse(courseId || "")); // Refresca la lista de capítulos
 
     setIsWaiting(false);
     setCreationMsg("Capítulo creado correctamente");

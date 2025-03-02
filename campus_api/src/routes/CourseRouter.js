@@ -10,7 +10,10 @@ const {
   getCourseByIdHandler,
   postChapterHandler,
   getUserCoursesHandler,
-  postChapterLectionHandler
+  postChapterLectionHandler,
+  deleteChapterLectionHandler,
+  deleteChapterHandler,
+  getUserCourseChaptersHandler,
 } = require("../handlers/Course/_index.js");
 
 // CourseRouter.get("/getAllCourses", getAllCoursesHandler);
@@ -19,9 +22,12 @@ CourseRouter.get("/", getCoursesHandler);
 CourseRouter.get("/:id", getCourseByIdHandler);
 CourseRouter.get("/theme", getThemeHandler);
 CourseRouter.post("/theme/:name", postThemeHandler);
-CourseRouter.delete("/:id", deleteCourseHandler);
+CourseRouter.delete("/delete/:courseId", deleteCourseHandler);
+CourseRouter.get("/usercourses/:userId", getUserCoursesHandler);
 CourseRouter.post("/chapter", postChapterHandler);
+CourseRouter.delete("/chapter/delete/:chapterId", deleteChapterHandler);
+CourseRouter.get("/chapter/:chapterId", getUserCourseChaptersHandler);
 CourseRouter.post("/chapter/lection", postChapterLectionHandler);
-CourseRouter.get("/usercourses/:id", getUserCoursesHandler);
+CourseRouter.delete("/chapter/lection/delete/:lectionId", deleteChapterLectionHandler);
 
 module.exports = CourseRouter;

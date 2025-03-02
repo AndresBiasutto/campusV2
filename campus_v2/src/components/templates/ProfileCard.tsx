@@ -1,6 +1,6 @@
 import React from "react";
 import Section from "../../layouts/Section";
-import ProfileCardOrg from "../organisms/ProfileCardOrg";
+import ProfileCardOrg from "../organisms/cards/ProfileCardOrg";
 
 const ProfileCard: React.FC = () => {
   return (

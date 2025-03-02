@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import FormInput from "../atoms/FormInput";
-import FormSubmitBtn from "../atoms/FormSubmitBtn";
-import FormErrorMsg from "../atoms/FormErrorMsg";
+import FormInput from "../../atoms/FormInput";
+import FormSubmitBtn from "../../atoms/FormSubmitBtn";
+import FormErrorMsg from "../../atoms/FormErrorMsg";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../redux/store";
-import { register } from "../../redux/actions/authActions";
-import FormSelect from "../atoms/FormSelect";
+import { AppDispatch } from "../../../redux/store";
+import { register } from "../../../redux/actions/authActions";
+import FormSelect from "../../atoms/FormSelect";
 
 const RegisterFormOrg: React.FC = () => {
   const nameRef = useRef<HTMLInputElement>(null);

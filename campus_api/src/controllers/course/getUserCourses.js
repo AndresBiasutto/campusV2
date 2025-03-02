@@ -1,7 +1,7 @@
 const { Course, User, Theme, Chapter, Lection } = require("../../db");
 
-const getUserCourses = async (id) => {
-    const user = await User.findByPk(id, {
+const getUserCourses = async (userId) => {
+    const user = await User.findByPk(userId, {
         include: [
             {
                 model: Course,

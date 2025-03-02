@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AppDispatch } from "../../redux/store";
-import { RootState } from "../../redux/reducers";
-import axios from "../../api/axios";
-import { loginSuccess } from "../../redux/actions/authActions";
-import FormInput from "../atoms/FormInput";
-import FormSubmitBtn from "../atoms/FormSubmitBtn";
-import FormErrorMsg from "../atoms/FormErrorMsg";
+import { AppDispatch } from "../../../redux/store";
+import { RootState } from "../../../redux/reducers";
+import axios from "../../../api/axios";
+import { loginSuccess } from "../../../redux/actions/authActions";
+import FormInput from "../../atoms/FormInput";
+import FormSubmitBtn from "../../atoms/FormSubmitBtn";
+import FormErrorMsg from "../../atoms/FormErrorMsg";
 
 const LoginFormOrg: React.FC = () => {
   const LOGIN_URL = "auth/login";

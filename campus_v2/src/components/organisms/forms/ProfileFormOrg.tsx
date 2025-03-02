@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import FormInput from "../atoms/FormInput";
-import FormSubmitBtn from "../atoms/FormSubmitBtn";
+import FormInput from "../../atoms/FormInput";
+import FormSubmitBtn from "../../atoms/FormSubmitBtn";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../redux/store";
-import { updateUser } from "../../redux/actions/authActions";
-import { RootState } from "../../redux/reducers";
-import FormErrorMsg from "../atoms/FormErrorMsg";
+import { AppDispatch } from "../../../redux/store";
+import { updateUser } from "../../../redux/actions/authActions";
+import { RootState } from "../../../redux/reducers";
+import FormErrorMsg from "../../atoms/FormErrorMsg";
 
 const ProfileFormOrg: React.FC = () => {
   const { id, token } = useSelector((state: RootState) => state.auth);

@@ -4,7 +4,7 @@ import AddChapterBtn from "../molecules/AddChapterBtn";
 import { AppDispatch } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  GetCreatedCourse,
+  getCreatedCourse,
   getMyCourses,
 } from "../../redux/actions/courseActions";
 import { RootState } from "../../redux/reducers";
@@ -17,15 +17,13 @@ const CreateCourseDataOrg: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
   const { course } = useSelector((state: RootState) => state);
   const { id: userId } = useSelector((state: RootState) => state.auth);
-  const chapters = course.chapters;
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(GetCreatedCourse(courseId || ""));
-    console.log(chapters);
+    dispatch(getCreatedCourse(courseId || ""));
 
     return () => {
-      dispatch(GetCreatedCourse(""));
+      dispatch(getCreatedCourse(""));
     };
   }, [courseId]);
   useEffect(() => {

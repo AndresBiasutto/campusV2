@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import ChapterCardBody from "../../molecules/ChapterCardBody";
 import ChapterCardButtons from "../../molecules/ChapterCardButtons";
+import Modal from "../../molecules/Modal";
+import RoundedBtn from "../../atoms/btnAtoms/RoundedBtn";
+import PTextT from "../../atoms/textAtoms/Ptext";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../../redux/store";
+import { RootState } from "../../../redux/reducers";
+import { deleteChapter, getMyCourses } from "../../../redux/actions/courseActions";
 
 interface ChapterCardProps {
   name?: string;
@@ -15,7 +22,20 @@ const ChapterCard: React.FC<ChapterCardProps> = ({
   lections,
   chapterId
 }) => {
-  const [toggle, settoggle] = useState(true);
+  const [toggle, settoggle] = useState(false);
+  const [showCard, setShowCard] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const { id: userId } = useSelector((state: RootState) => state.auth);
+    const handleDelete = async () => {
+      if (!chapterId) return;
+  
+      dispatch(await deleteChapter(chapterId)); // Esperar la eliminación
+      dispatch(await getMyCourses(userId || ""));
+  
+      setTimeout(() => {
+        settoggle(!toggle);
+      }, 3000);
+    };
 
   const handleToggle = () => {
     settoggle(!toggle);
@@ -26,13 +46,32 @@ const ChapterCard: React.FC<ChapterCardProps> = ({
         {chapterOrder}
       </p>
       <ChapterCardBody
-        toggle={toggle}
+        toggle={showCard}
         name={name || "Default Name"}
         lections={lections}
         chapterOrder={chapterOrder}
         chapterId={chapterId}
       />
-      <ChapterCardButtons toggle={toggle} handleAction={handleToggle} />
+      <ChapterCardButtons toggle={toggle} handleAction={handleToggle} showCard={showCard} setShowCard={ ()=> setShowCard(!showCard) } />
+      <Modal title="¿Estás seguro?" isOpen={toggle} onClose={handleToggle} >
+      <div>
+          <PTextT text="todos los dátos de esta lección serán eliminados permanentemente." />
+          <div className="flex flex-row justify-center gap-2">
+            <RoundedBtn
+              bgColor={"blueBtn"}
+              children={"Si"}
+              title={"Si"}
+              action={handleDelete}
+            />
+            <RoundedBtn
+              bgColor={"redBtn"}
+              children={"No"}
+              title={"No"}
+              action={handleToggle}
+            />
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

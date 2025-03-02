@@ -2,7 +2,7 @@ import React from "react";
 import FormHeader from "../molecules/FormHeader";
 import logo from "../../assets/img/campusLogo.svg";
 import FormFooter from "../molecules/FormFooter";
-import RegisterFormOrg from "../organisms/RegisterFormOrg";
+import RegisterFormOrg from "../organisms/forms/RegisterFormOrg";
 import FormSection from "../../layouts/FormSection";
 
 const RegisterForm: React.FC = () => {

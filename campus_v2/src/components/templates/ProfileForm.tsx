@@ -1,6 +1,6 @@
 import React from 'react'
 import Section from '../../layouts/Section'
-import ProfileFormOrg from '../organisms/ProfileFormOrg'
+import ProfileFormOrg from '../organisms/forms/ProfileFormOrg'
 
 const ProfileForm: React.FC = () => {
   return (

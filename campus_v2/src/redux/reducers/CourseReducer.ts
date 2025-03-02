@@ -1,10 +1,16 @@
 import {
-  CRREATE_COURSE,
-  CourseActionTypes,
+  CREATE_COURSE,
   GET_CREATED_COURSE,
   GET_USER_COURSES,
-  CREATE_CHAPTER
-} from "../actions/courseActions";
+  CREATE_CHAPTER,
+  DELETE_LECTION,
+  DELETE_CHAPTER,
+  DELETE_COURSE,
+  SET_ERROR,
+} from "../actionTypes";
+import { Course } from "../../interfaces/Course";
+import { Chapter } from "../../interfaces/Chapter";
+import { CourseActionTypes } from "../actions/courseActions";
 
 interface CourseState {
   id: string | null;
@@ -19,26 +25,8 @@ interface CourseState {
   themeId: string | null;
   userCourses: [] | null;
   chapters: Chapter[] | null;
-}
-interface Chapter {
-  id: string;
-  name: string;
-  courseId: string;
-  lections: { id: string; name: string; lectionOrder: number, text: string }[];
-  chapterOrder: number;
-  text:string;
-}
-interface Course {
-  courseOrder: number | undefined;
-  id: string;
-  name: string;
-  image: string;
-  Theme: { name: string };
-  description: string;
-  chapters: Chapter[];
-  email: string;
-  themeId: string;
-}
+  error: string | null;
+} 
 
 interface CourseState {
   courses: Course[];
@@ -58,62 +46,76 @@ const initialCourseState: CourseState = {
   Creator: null,
   themeId: null,
   userCourses: null,
+  error: null
 };
-const CourseReducer = (
+
+const courseReducer = (
   state: CourseState = initialCourseState,
   action: CourseActionTypes
 ): CourseState => {
   switch (action.type) {
-    case CRREATE_COURSE:
-      if ("payload" in action) {
-        return {
-          ...state,
-          name: action.payload.name,
-          themeId: action.payload.themeId,
-          id: action.payload.id,
-          creatorId: action.payload.creatorId,
-          image: action.payload.image,
-          description: action.payload.description,
-          Theme: action.payload.Theme,
-        };
-      }
-      return state;
-      case CREATE_CHAPTER:
+    case CREATE_COURSE:
+      return { ...state, courses: [...state.courses, action.payload] };
+
+      case GET_CREATED_COURSE:
         if ("payload" in action) {
           return {
             ...state,
-            chapters: Array.isArray(action.payload) ? action.payload : [],
+            name: action.payload.name,
+            themeId: action.payload.themeId,
+            id: action.payload.id,
+            creatorId: action.payload.creatorId,
+            image: action.payload.image,
+            description: action.payload.description,
+            Theme: action.payload.Theme,
+            chapters: action.payload.chapters.map((chapter: any) => ({
+              ...chapter,
+              chapterOrder: chapter.chapterOrder || undefined,
+              courseOrder: chapter.courseOrder || '',
+            })),
           };
         }
         return state;
-    case GET_CREATED_COURSE:
-      if ("payload" in action) {
-        return {
-          ...state,
-          name: action.payload.name,
-          themeId: action.payload.themeId,
-          id: action.payload.id,
-          creatorId: action.payload.creatorId,
-          image: action.payload.image,
-          description: action.payload.description,
-          Theme: action.payload.Theme,
-          chapters: action.payload.chapters.map((chapter: any) => ({
-            ...chapter,
-            chapterOrder: chapter.chapterOrder || undefined,
-            courseOrder: chapter.courseOrder || '',
-          })),
-        };
-      }
-      return state;
     case GET_USER_COURSES:
+      return { ...state, courses: action.payload };
+
+    case CREATE_CHAPTER:
       return {
         ...state,
-        courses: Array.isArray(action.payload) ? action.payload : [],
+        chapters: state.chapters ? [...state.chapters, action.payload] : [action.payload],
       };
+
+    case DELETE_LECTION:
+      return {
+        ...state,
+        chapters: state.chapters
+          ? state.chapters.map((chapter) => ({
+              ...chapter,
+              lections: chapter.lections.filter(
+                (lection) => lection.id !== action.payload
+              ),
+            }))
+          : [],
+      };
+
+    case DELETE_CHAPTER:
+      return {
+        ...state,
+        chapters: state.chapters?.filter((chapter) => chapter.id !== action.payload) || [],
+      };
+      case DELETE_COURSE:
+        return {
+          ...state,
+          courses: state.courses.filter((course) => course.id !== action.payload),
+          chapters: state.chapters?.filter((chapter) => chapter.courseId !== action.payload) || [],
+        };
+
+    case SET_ERROR:
+      return { ...state, error: action.payload };
 
     default:
       return state;
   }
 };
 
-export default CourseReducer;
+export default courseReducer;

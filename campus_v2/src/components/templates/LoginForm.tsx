@@ -1,5 +1,5 @@
 import React from "react";
-import LoginFormOrg from "../organisms/LoginFormOrg";
+import LoginFormOrg from "../organisms/forms/LoginFormOrg";
 import FormHeader from "../molecules/FormHeader";
 import FormFooter from "../molecules/FormFooter";
 import logo from "../../assets/img/campusLogo.svg";

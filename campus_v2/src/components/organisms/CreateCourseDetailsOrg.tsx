@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch } from "../../redux/store";
 import { RootState } from "../../redux/reducers";
-import { GetCreatedCourse } from "../../redux/actions/courseActions";
+import { getCreatedCourse } from "../../redux/actions/courseActions";
 
 const CreateCourseDetailsOrg: React.FC = () => {
   const { courseId } = useParams();
@@ -12,7 +12,8 @@ const CreateCourseDetailsOrg: React.FC = () => {
 
   useEffect(() => {
     if (courseId) {
-      dispatch(GetCreatedCourse(courseId));
+      dispatch(getCreatedCourse(courseId));
+      
     }
   }, [courseId, dispatch]);
   return (

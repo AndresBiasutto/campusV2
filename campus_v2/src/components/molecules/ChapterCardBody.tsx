@@ -46,6 +46,7 @@ const ChapterCardBody: React.FC<chapterCardBodyParams> = ({
         {orderedLections?.map((lection) => (
           <LectionCard
             key={lection.id}
+            lectionId={lection.id}
             name={lection.name}
             lectionOrder={lection?.lectionOrder}
             text={lection.text}

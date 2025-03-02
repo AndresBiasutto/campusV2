@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/reducers";
-import ProfileCardHeader from "../molecules/ProfileCardHeader";
+import { RootState } from "../../../redux/reducers";
+import ProfileCardHeader from "../../molecules/ProfileCardHeader";
 
 const ProfileCardOrg: React.FC = () => {
   const { image, name, email, contactNumber, description } = useSelector(

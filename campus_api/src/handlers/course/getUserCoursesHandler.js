@@ -1,9 +1,9 @@
 const {getUserCourses} = require('../../controllers/course/_index');
 
 const getUerCoursesHandler = async (req, res) => {
-    const { id } = req.params;
+    const { userId } = req.params;
     try {
-      const response = await getUserCourses(id)
+      const response = await getUserCourses(userId)
       console.log(response);
       res.status(200).json(response);
     } catch (error) {

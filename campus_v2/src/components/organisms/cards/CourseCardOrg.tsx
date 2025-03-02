@@ -1,9 +1,9 @@
 import React from "react";
-import CardImage from "../atoms/CardImage";
-import CardCreatorInfo from "../molecules/CardCreatorInfo";
-import CardData from "./cards/CardData";
+import CardImage from "../../atoms/CardImage";
+import CardCreatorInfo from "../../molecules/CardCreatorInfo";
+import CardData from "./CardData";
 import { Link } from "react-router-dom";
-import RoundedBtn from "../atoms/btnAtoms/RoundedBtn";
+import RoundedBtn from "../../atoms/btnAtoms/RoundedBtn";
 import { LuBookX } from "react-icons/lu";
 import { FaAngleRight } from "react-icons/fa6";
 
@@ -20,17 +20,17 @@ interface courseCardProps {
 const CourseCardOrg: React.FC<courseCardProps> = ({ course }) => {
   return (
     <div className=" group relative max-w-sm w-full lg:max-w-full lg:flex rounded-tl-lg rounded-br-lg border-2 border-light-border dark:border-dark-border overflow-hidden md:hover:shadow-light md:dark:hover:shadow-dark transition">
-      <CardImage image={course.image} name={course.name} />
+      <CardImage image={course?.image} name={course?.name} />
       <Link
-        to={`/teach/createcourse/addmodulesandchapters/${course.id}`}
+        to={`/teach/createcourse/addmodulesandchapters/${course?.id}`}
         className="  bg-light-secondary dark:bg-dark-secondary p-4 flex flex-col justify-between leading-normal w-full"
       >
         <CardData
-          name={course.name}
-          description={course.description}
-          themeName={course.Theme.name}
+          name={course?.name}
+          description={course?.description}
+          themeName={course?.Theme.name}
         />
-        <CardCreatorInfo name={course.name} image={course.image} />
+        <CardCreatorInfo name={course?.name} image={course?.image} />
       </Link>
       <div className="group-hover:right-0 p-4 transition-all absolute -right-14 top-0 h-full w-14 flex flex-col items-center justify-between">
         <RoundedBtn bgColor="primary" title={"eliminar curso"} action={() => alert("ya bro...")}>

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../../redux/store";
 import { RootState } from "../../../redux/reducers";
-import { CreateCourse } from "../../../redux/actions/courseActions";
 import { GetThemes } from "../../../redux/actions/themeActions";
 import {
   validateName,
@@ -18,6 +17,8 @@ import FormInputAndErrorMsg from "../../molecules/FormInputAndErrorMsg";
 import FormTextAreaAndErrorMsg from "../../molecules/FormTextAreaAndErrorMsg";
 import FormSubmitBtn from "../../atoms/FormSubmitBtn";
 import FormSelectAndErrorMsg from "../../molecules/FormSelectAndErrorMsg";
+import { Course } from "../../../interfaces/Course";
+import { createCourse } from "../../../redux/actions/courseActions";
 
 const CreateCourseFormOrg: React.FC = () => {
   const navigate = useNavigate();
@@ -88,7 +89,7 @@ const CreateCourseFormOrg: React.FC = () => {
       return;
     }
 
-    const newCourse = {
+    const newCourse: Course = {
       id: "",
       ...formData,
       image: imageUrl,
@@ -99,7 +100,7 @@ const CreateCourseFormOrg: React.FC = () => {
       chapters: [],
     };
 
-    dispatch(CreateCourse(newCourse));
+    dispatch(createCourse(newCourse));
     setCreationMsg("Curso creado con éxito");
     setTimeout(() => {
       setCreationMsg("");
@@ -140,7 +141,7 @@ const CreateCourseFormOrg: React.FC = () => {
             placeholder="Tema"
             errMsg={errMsg.theme}
           />
-          <ImgInputAndAvatar uploadImage={changeImage} image={imageUrl} />
+          <ImgInputAndAvatar changeImage={changeImage} imageUrl={imageUrl} />
         </div>
         <div className="w-full grid grid-cols-2 gap-2">
           <div></div>

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
 interface CustomFileInputProps {
-  uploadImage: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  changeImage: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onFileSelect: (file: File) => void;
 }
 
 const CustomFileInput: React.FC<CustomFileInputProps> = ({
   onFileSelect,
-  uploadImage,
+  changeImage,
 }) => {
   const [fileName, setFileName] = useState<string>(
     "Ningún archivo seleccionado"
@@ -16,7 +16,7 @@ const CustomFileInput: React.FC<CustomFileInputProps> = ({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      uploadImage(e);
+      changeImage(e);
       setFileName(file.name);
       onFileSelect(file);
     }
